@@ -93,9 +93,6 @@ namespace Microsoft.Extensions.DependencyInjection
                     options.ClientSecret = config?.Client.Secret ?? throw new InvalidOperationException("You need to set Client Secret");
                     options.CallbackPath = new PathString(CallbackPath);
 
-                    options.Scope.Add("identify");
-                    options.Scope.Add("email");
-                    options.Scope.Add("guilds.members.read");
                     options.Scope.Add("guilds");
 
                     options.ClaimActions.MapJsonKey(ClaimTypes.NameIdentifier, "id");
@@ -186,7 +183,7 @@ namespace Microsoft.Extensions.DependencyInjection
                     context.Response.Cookies.Delete(CookieName);
                     await context.SignOutAsync();
 
-                    await WriteResponse(context.Response, StatusCodes.Status200OK, "Signed Out");
+                    await WriteResponse(context.Response, StatusCodes.Status200OK, "ログアウトしました");
                 });
             });
 
@@ -223,7 +220,7 @@ namespace Microsoft.Extensions.DependencyInjection
         {
             LogRequest("Authentication Fail", context, context.User.Claims);
 
-            await WriteResponse(response, StatusCodes.Status403Forbidden, "Authentication Failed");
+            await WriteResponse(response, StatusCodes.Status403Forbidden, "認証に失敗しました");
         }
 
         private static async Task WriteResponse(HttpResponse response, int statusCode, string message)
